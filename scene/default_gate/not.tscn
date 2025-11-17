@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://rdclj4owayam"]
+
+[ext_resource type="Script" uid="uid://buow57pt7mgf8" path="res://scene/default_gate/not.gd" id="1_wvhe8"]
+
+[node name="Not" type="Node"]
+script = ExtResource("1_wvhe8")
+metadata/_custom_type_script = "uid://brdlca0gvo0h0"
