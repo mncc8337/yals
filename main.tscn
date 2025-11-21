@@ -7,8 +7,12 @@
 [node name="Main" type="Node"]
 script = ExtResource("1_ig7tw")
 
-[node name="Controller" type="Node" parent="."]
+[node name="Camera" type="Camera2D" parent="."]
+
+[node name="Controller" type="Node" parent="." node_paths=PackedStringArray("camera", "elements")]
 script = ExtResource("2_h2yge")
+camera = NodePath("../Camera")
+elements = NodePath("../Elements")
 
 [node name="Elements" type="Node" parent="."]
 

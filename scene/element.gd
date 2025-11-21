@@ -25,8 +25,8 @@ func _on_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -
 				else:
 					is_dragging = false
 	elif event is InputEventMouseMotion:
-		if event.button_mask & MOUSE_BUTTON_LEFT:
+		if event.button_mask & MOUSE_BUTTON_MASK_LEFT:
 			if not is_dragging:
 				is_dragging = true
-				mouse_relative_distance = self.global_position - event.position
+				mouse_relative_distance = self.global_position - event.global_position
 				print("dragging ", self)
