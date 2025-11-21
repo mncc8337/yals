@@ -29,8 +29,24 @@ var elements: Array[Element] = []
 var direct_connect: Dictionary[Joint, Array] = {}
 
 
+func _resize_container(container: Node2D, available_size: float):
+	var children: Array[Node] = container.get_children()
+	var children_count: float = container.get_child_count()
+	
+	if children_count == 0:
+		return
+	
+	if children_count == 1:
+		children[0].position.y = 0
+		return
+	
+	for i: int in range(children_count):
+		var child: Node2D = children[i]
+		child.position.y = available_size * (i / (children_count - 1.0) - 0.5)
+
 func add_pin(pin_name: String, pin_type: PinType) -> Joint:
 	var pin: Joint = joint_scene.instantiate()
+	pin.draggable = false
 	pin.show_label = true
 	pin.name = pin_name
 	pin.value = false
@@ -47,10 +63,15 @@ func add_pin(pin_name: String, pin_type: PinType) -> Joint:
 			pin.label_placement = Joint.LabelPlacement.LEFT
 			%OutputContainer.add_child(pin)
 	
-	# get max size of all containers
 	var max_height: float = max(len(io_pin[PinType.INPUT]), len(io_pin[PinType.OUTPUT]))
-	# resize area
-	%Area.scale.y = max_height + 5
+	
+	# resize shape and containers
+	var spacing: float = 42.0
+	var padding: float = 32.0
+	var content_size: float = (max_height - 1) * spacing
+	%Area.scale.y = (content_size + padding * 2) / 120.0
+	_resize_container(%InputContainer, content_size)
+	_resize_container(%OutputContainer, content_size)
 
 	return pin
 
@@ -192,25 +213,3 @@ func update_output() -> void:
 func _on_label_resized() -> void:
 	%Label.position.x = %Label.size.y / 2
 	%Label.position.y = -%Label.size.x / 2
-
-
-func resize_container(container: Node2D):
-	var available_size = %Area.scale.y * 24
-	var children: Array[Node] = container.get_children()
-	var children_count: int = container.get_child_count()
-	
-	for i: int in range(children_count):
-		var child: Node2D = children[i]
-		child.position.y = available_size * ((0.5 + i) / children_count - 0.5)
-
-
-func _on_input_container_child_entered_tree(node: Node) -> void:
-	if node == %InputContainer:
-		return
-	resize_container(%InputContainer)
-
-
-func _on_output_container_child_entered_tree(node: Node) -> void:
-	if node == %OutputContainer:
-		return
-	resize_container(%OutputContainer)

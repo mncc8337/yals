@@ -1,18 +1,22 @@
-[gd_scene load_steps=3 format=3 uid="uid://ct8flsdn3pe5u"]
+[gd_scene load_steps=4 format=3 uid="uid://ct8flsdn3pe5u"]
 
 [ext_resource type="PackedScene" uid="uid://df66ol0cevrpd" path="res://scene/element.tscn" id="1_c8rht"]
 [ext_resource type="Script" uid="uid://brdlca0gvo0h0" path="res://scene/ic.gd" id="2_qc4ip"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qc4ip"]
+size = Vector2(199.2, 120)
 
 [node name="IC" instance=ExtResource("1_c8rht")]
 script = ExtResource("2_qc4ip")
 ic_name = "IC"
 
-[node name="Area" parent="." index="0"]
-scale = Vector2(8.3, 5)
+[node name="CollisionShape" parent="Area" index="0"]
+shape = SubResource("RectangleShape2D_qc4ip")
 
 [node name="Shape" parent="Area" index="1"]
-position = Vector2(4, -4)
-polygon = PackedVector2Array(-15.999992, 16.000004, -15.999992, 16.000004, 7.9999924, 15.999999, 7.9999924, -7.999997, -16.000008, -7.999997)
+position = Vector2(-33, 20)
+scale = Vector2(8.3, 5)
+polygon = PackedVector2Array(-7.9999924, 8.000004, -7.9999924, 8.000004, 15.999992, 7.999999, 15.999992, -15.999997, -8.000008, -15.999997)
 
 [node name="Label" parent="." index="1"]
 offset_left = 46.5
@@ -33,5 +37,3 @@ unique_name_in_owner = true
 position = Vector2(100, 0)
 
 [connection signal="resized" from="Label" to="." method="_on_label_resized"]
-[connection signal="child_entered_tree" from="InputContainer" to="." method="_on_input_container_child_entered_tree"]
-[connection signal="child_entered_tree" from="OutputContainer" to="." method="_on_output_container_child_entered_tree"]

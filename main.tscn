@@ -14,4 +14,4 @@ script = ExtResource("2_h2yge")
 
 [node name="IC" parent="Elements" instance=ExtResource("2_0xm2m")]
 unique_name_in_owner = true
-position = Vector2(478, 315)
+position = Vector2(590, 310)
