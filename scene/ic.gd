@@ -1,5 +1,15 @@
+@tool
 class_name IC
 extends Element
+
+
+@onready var joint_scene: Resource = load("res://scene/joint.tscn")
+
+@export var ic_name: String = "IC":
+	set(val):
+		if ic_name != val:
+			ic_name = val
+			%Label.text = val
 
 enum PinType {
 	INPUT,
@@ -18,27 +28,46 @@ var elements: Array[Element] = []
 
 var direct_connect: Dictionary[Joint, Array] = {}
 
-func _init() -> void:
-	pass
 
-func add_pin(pin_name: String, init_value: bool, pin_type: PinType) -> Joint:
-	var pin = Joint.new(pin_name, init_value)
+func add_pin(pin_name: String, pin_type: PinType) -> Joint:
+	var pin: Joint = joint_scene.instantiate()
+	pin.show_label = true
+	pin.name = pin_name
+	pin.value = false
 	pin.associated_ic = self
 	io_pin[pin_type].append(pin)
 	io_pin_type_map[pin] = pin_type
 	io_pin_name_map[pin_name] = pin
+	
+	match pin_type:
+		PinType.INPUT:
+			pin.label_placement = Joint.LabelPlacement.RIGHT
+			%InputContainer.add_child(pin)
+		PinType.OUTPUT:
+			pin.label_placement = Joint.LabelPlacement.LEFT
+			%OutputContainer.add_child(pin)
+	
+	# get max size of all containers
+	var max_height: float = max(len(io_pin[PinType.INPUT]), len(io_pin[PinType.OUTPUT]))
+	# resize area
+	%Area.scale.y = max_height + 5
+
 	return pin
+
 
 func set_pin(pin_name: String, value: bool) -> void:
 	assert(io_pin_name_map.has(pin_name), "IC %s does not has pin %s" % [self.name, pin_name])
 	io_pin_name_map[pin_name].value = value
-	
+
+
 func get_pin(pin_name: String) -> Joint:
 	assert(io_pin_name_map.has(pin_name), "IC %s does not has pin %s" % [self.name, pin_name])
 	return io_pin_name_map[pin_name]
 
+
 func add_element(el: Element) -> void:
 	elements.append(el)
+
 
 func _dfs(j: Joint, visited: Dictionary[Joint, bool]) -> Array[Joint]:
 	# search for direct connections from one joint to
@@ -69,6 +98,7 @@ func _dfs(j: Joint, visited: Dictionary[Joint, bool]) -> Array[Joint]:
 			end_joints += _dfs(adj_joint, visited)
 	return end_joints
 
+
 func make_graph() -> void:
 	# ommit intermediate joints to make the signal propagation even and faster
 	direct_connect.clear()
@@ -86,6 +116,7 @@ func make_graph() -> void:
 			continue
 		var end_joint = _dfs(j, {})
 		direct_connect[j] = end_joint
+
 
 func update_output() -> void:
 	# use bfs to simulate signal propagation
@@ -156,3 +187,30 @@ func update_output() -> void:
 		# repeat until queue is empty
 		if len(signal_propagating_queue) == 0:
 			break
+
+
+func _on_label_resized() -> void:
+	%Label.position.x = %Label.size.y / 2
+	%Label.position.y = -%Label.size.x / 2
+
+
+func resize_container(container: Node2D):
+	var available_size = %Area.scale.y * 24
+	var children: Array[Node] = container.get_children()
+	var children_count: int = container.get_child_count()
+	
+	for i: int in range(children_count):
+		var child: Node2D = children[i]
+		child.position.y = available_size * ((0.5 + i) / children_count - 0.5)
+
+
+func _on_input_container_child_entered_tree(node: Node) -> void:
+	if node == %InputContainer:
+		return
+	resize_container(%InputContainer)
+
+
+func _on_output_container_child_entered_tree(node: Node) -> void:
+	if node == %OutputContainer:
+		return
+	resize_container(%OutputContainer)

@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://df66ol0cevrpd"]
+
+[ext_resource type="Script" uid="uid://cq66bkgu4dmvg" path="res://scene/element.gd" id="1_8e27a"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8e27a"]
+size = Vector2(24, 24)
+
+[sub_resource type="LabelSettings" id="LabelSettings_8e27a"]
+font_size = 32
+
+[node name="Element" type="Node2D"]
+script = ExtResource("1_8e27a")
+
+[node name="Area" type="Area2D" parent="."]
+unique_name_in_owner = true
+
+[node name="CollisionShape" type="CollisionShape2D" parent="Area"]
+shape = SubResource("RectangleShape2D_8e27a")
+
+[node name="Shape" type="Polygon2D" parent="Area"]
+color = Color(0.18359044, 0.18359044, 0.18359044, 1)
+polygon = PackedVector2Array(-7.9999876, 8.000002, -7.9999876, 8.000002, 15.999997, 7.999998, 15.999997, -15.999998, -8.000003, -15.999998)
+uv = PackedVector2Array(-23.999985, -16, -23.999985, -16, 0, -16.000004, 0, -40, -24, -40)
+
+[node name="Label" type="Label" parent="."]
+unique_name_in_owner = true
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Element"
+label_settings = SubResource("LabelSettings_8e27a")
+
+[connection signal="input_event" from="Area" to="." method="_on_area_input_event"]

@@ -1,6 +1,17 @@
-[gd_scene load_steps=2 format=3 uid="uid://c3suu2noue81e"]
+[gd_scene load_steps=4 format=3 uid="uid://c3suu2noue81e"]
 
 [ext_resource type="Script" uid="uid://b3wnqbi0q1jff" path="res://main.gd" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://ct8flsdn3pe5u" path="res://scene/ic.tscn" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://brbeaav2egqqv" path="res://script/controller.gd" id="2_h2yge"]
 
-[node name="Node" type="Node"]
+[node name="Main" type="Node"]
 script = ExtResource("1_ig7tw")
+
+[node name="Controller" type="Node" parent="."]
+script = ExtResource("2_h2yge")
+
+[node name="Elements" type="Node" parent="."]
+
+[node name="IC" parent="Elements" instance=ExtResource("2_0xm2m")]
+unique_name_in_owner = true
+position = Vector2(478, 315)

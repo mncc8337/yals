@@ -1,7 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://bnillijytatmk"]
+[gd_scene load_steps=3 format=3 uid="uid://bamff14gwu3p"]
 
+[ext_resource type="PackedScene" uid="uid://ct8flsdn3pe5u" path="res://scene/ic.tscn" id="1_1jkn0"]
 [ext_resource type="Script" uid="uid://6n5tylsc5q7l" path="res://scene/default_gate/or.gd" id="1_4swvc"]
 
-[node name="Or" type="Node"]
+[node name="Or" instance=ExtResource("1_1jkn0")]
 script = ExtResource("1_4swvc")
-metadata/_custom_type_script = "uid://brdlca0gvo0h0"
+input_count = 2
+
+[node name="Label" parent="." index="1"]
+text = "OR"

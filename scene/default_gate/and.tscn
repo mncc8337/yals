@@ -1,8 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://bci7n2kbbc2lf"]
+[gd_scene load_steps=3 format=3 uid="uid://l4s3c2qwnuak"]
 
+[ext_resource type="PackedScene" uid="uid://ct8flsdn3pe5u" path="res://scene/ic.tscn" id="1_35ype"]
 [ext_resource type="Script" uid="uid://cheo22ociio74" path="res://scene/default_gate/and.gd" id="1_b6w0d"]
 
-[node name="And" type="Node"]
+[node name="And" instance=ExtResource("1_35ype")]
 script = ExtResource("1_b6w0d")
-input_count = null
-metadata/_custom_type_script = "uid://brdlca0gvo0h0"
+input_count = 2
+
+[node name="Label" parent="." index="1"]
+text = "AND"

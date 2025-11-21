@@ -1,5 +1,0 @@
-[gd_scene format=3 uid="uid://d0wsmj5djm6kb"]
-
-[node name="Joint" type="Control"]
-layout_mode = 3
-anchors_preset = 0
