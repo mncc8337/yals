@@ -12,13 +12,13 @@ extends Element
 			%Label.text = val
 
 enum PinType {
-	INPUT,
-	OUTPUT,
+	Input,
+	Output,
 }
 
 var io_pin: Dictionary[PinType, Array] = {
-	PinType.INPUT: [],
-	PinType.OUTPUT: [],
+	PinType.Input: [],
+	PinType.Output: [],
 }
 
 var io_pin_type_map: Dictionary[Joint, PinType] = {}
@@ -29,7 +29,7 @@ var elements: Array[Element] = []
 var direct_connect: Dictionary[Joint, Array] = {}
 
 
-func _resize_container(container: Node2D, available_size: float):
+func _resize_container(container: Node2D, available_size: float) -> void:
 	var children: Array[Node] = container.get_children()
 	var children_count: float = container.get_child_count()
 	
@@ -56,14 +56,14 @@ func add_pin(pin_name: String, pin_type: PinType) -> Joint:
 	io_pin_name_map[pin_name] = pin
 	
 	match pin_type:
-		PinType.INPUT:
-			pin.label_placement = Joint.LabelPlacement.RIGHT
+		PinType.Input:
+			pin.label_placement = Joint.LabelPlacement.Right
 			%InputContainer.add_child(pin)
-		PinType.OUTPUT:
-			pin.label_placement = Joint.LabelPlacement.LEFT
+		PinType.Output:
+			pin.label_placement = Joint.LabelPlacement.Left
 			%OutputContainer.add_child(pin)
 	
-	var max_height: float = max(len(io_pin[PinType.INPUT]), len(io_pin[PinType.OUTPUT]))
+	var max_height: float = max(len(io_pin[PinType.Input]), len(io_pin[PinType.Output]))
 	
 	# resize shape and containers
 	var spacing: float = 42.0
@@ -105,10 +105,10 @@ func _dfs(j: Joint, visited: Dictionary[Joint, bool]) -> Array[Joint]:
 		if ic:
 			var pin_type = ic.io_pin_type_map[adj_joint]
 			# endpoint1: external ic input pin
-			if ic != self and pin_type == PinType.INPUT:
+			if ic != self and pin_type == PinType.Input:
 				is_endpoint = true
 			# endpoint2: this ic output pin
-			if ic == self and pin_type == PinType.OUTPUT:
+			if ic == self and pin_type == PinType.Output:
 				is_endpoint = true
 				
 		if is_endpoint:
@@ -124,13 +124,13 @@ func make_graph() -> void:
 	# ommit intermediate joints to make the signal propagation even and faster
 	direct_connect.clear()
 
-	var pins: Array = io_pin[PinType.INPUT]
+	var pins: Array = io_pin[PinType.Input]
 
 	# add ICs' output pin to the calculation
 	for e in elements:
 		if e is not IC:
 			continue
-		pins += e.io_pin[PinType.OUTPUT]
+		pins += e.io_pin[PinType.Output]
 	
 	for j: Joint in pins:
 		if len(j.adjacent) == 0:
@@ -150,7 +150,7 @@ func update_output() -> void:
 	# internal ics to update output
 	var ic_update_list: Array[IC] = []
 	
-	for j: Joint in io_pin[PinType.INPUT]:
+	for j: Joint in io_pin[PinType.Input]:
 		carry[j] = j.value
 		signal_propagating_queue.push_back(j)
 
@@ -181,7 +181,7 @@ func update_output() -> void:
 					
 					# update internal ic if propagated to its input pins
 					var internal_ic = adj_joint.associated_ic
-					if internal_ic and internal_ic != self and internal_ic.io_pin_type_map[adj_joint] == PinType.INPUT:
+					if internal_ic and internal_ic != self and internal_ic.io_pin_type_map[adj_joint] == PinType.Input:
 						if internal_ic not in ic_update_list:
 							ic_update_list.push_back(internal_ic)
 						print("%s -> ic %s" % [adj_joint, internal_ic])
@@ -190,11 +190,11 @@ func update_output() -> void:
 					
 		for internal_ic: IC in ic_update_list:
 			var original_output_value: Dictionary[Joint, bool] = {}
-			for output_joint in internal_ic.io_pin[PinType.OUTPUT]:
+			for output_joint in internal_ic.io_pin[PinType.Output]:
 				original_output_value[output_joint] = output_joint.value
 
 			internal_ic.update_output()
-			for output_joint: Joint in internal_ic.io_pin[PinType.OUTPUT]:
+			for output_joint: Joint in internal_ic.io_pin[PinType.Output]:
 				if original_output_value[output_joint] != output_joint.value:
 					# only requeue if the output value changed
 					signal_propagating_queue.push_back(output_joint)

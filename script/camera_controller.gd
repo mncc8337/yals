@@ -1,30 +1,14 @@
 extends Node
 
 
-@export var camera: Camera2D
-@export var elements: Node
-
 var is_dragging: bool = false
 var last_mouse_position: Vector2
 
 var zoom_speed: float = 1.1
 var zoom: float = 1.0
 
-func _zoom_to_mouse(direction: int):
-	var old_zoom = zoom
-	
-	if direction < 0:
-		camera.zoom /= zoom_speed
-		zoom /= 1.1
-	else:
-		camera.zoom *= zoom_speed
-		zoom *= 1.1
-		
-	var old_offset: Vector2 = camera.get_global_mouse_position() - camera.global_position
-	var new_offset: Vector2 = old_offset * old_zoom / zoom
-	camera.global_position += old_offset - new_offset
 
-func _unhandled_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
 	# camera drag
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_MIDDLE:
@@ -41,9 +25,19 @@ func _unhandled_input(event: InputEvent) -> void:
 				last_mouse_position = event.global_position
 				print("dragging camera")
 			else:
-				camera.global_position -= (event.global_position - last_mouse_position) / zoom
+				%Camera.global_position -= (event.global_position - last_mouse_position) / zoom
 				last_mouse_position = event.global_position
 
-
-func _ready() -> void:
-	pass
+func _zoom_to_mouse(direction: int) -> void:
+	var old_zoom = zoom
+	
+	if direction < 0:
+		%Camera.zoom /= zoom_speed
+		zoom /= 1.1
+	else:
+		%Camera.zoom *= zoom_speed
+		zoom *= 1.1
+		
+	var old_offset: Vector2 = %Camera.get_global_mouse_position() - %Camera.global_position
+	var new_offset: Vector2 = old_offset * old_zoom / zoom
+	%Camera.global_position += old_offset - new_offset

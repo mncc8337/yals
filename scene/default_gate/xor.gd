@@ -3,13 +3,13 @@ extends IC
 @export var input_count: int = 2
 
 func _ready() -> void:
-	add_pin("O", PinType.OUTPUT)
+	add_pin("O", PinType.Output)
 	for i in range(input_count):
-		add_pin("I" + str(i), PinType.INPUT)
+		add_pin("I" + str(i), PinType.Input)
 
 func update_output() -> void:
-	var res: bool = io_pin[PinType.INPUT][0].value
+	var res: bool = io_pin[PinType.Input][0].value
 	for i in range(1, input_count):
-		res = (res != io_pin[PinType.INPUT][i].value)
+		res = (res != io_pin[PinType.Input][i].value)
 
-	io_pin[PinType.OUTPUT][0].value = res
+	io_pin[PinType.Output][0].value = res

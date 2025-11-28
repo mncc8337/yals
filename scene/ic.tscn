@@ -4,13 +4,14 @@
 [ext_resource type="Script" uid="uid://brdlca0gvo0h0" path="res://scene/ic.gd" id="2_qc4ip"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qc4ip"]
-size = Vector2(199.2, 120)
+size = Vector2(158, 120)
 
 [node name="IC" instance=ExtResource("1_c8rht")]
 script = ExtResource("2_qc4ip")
 ic_name = "IC"
 
 [node name="CollisionShape" parent="Area" index="0"]
+position = Vector2(-3.8146973e-06, 0)
 shape = SubResource("RectangleShape2D_qc4ip")
 
 [node name="Shape" parent="Area" index="1"]
