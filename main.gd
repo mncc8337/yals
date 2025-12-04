@@ -19,8 +19,6 @@ func _ready() -> void:
 	add_pin("I", IC.PinType.Input)
 	add_ic(not_scene)
 	add_ic(not_scene)
-	add_ic(not_scene)
-	add_ic(not_scene)
 
 
 func add_pin(pin_name: String, pin_type: IC.PinType):

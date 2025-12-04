@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://cq66bkgu4dmvg" path="res://scene/element.gd" id="1_8e27a"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8e27a"]
-size = Vector2(24, 24)
 
 [sub_resource type="LabelSettings" id="LabelSettings_8e27a"]
 font_size = 32
@@ -29,5 +28,4 @@ offset_bottom = 23.0
 text = "Element"
 label_settings = SubResource("LabelSettings_8e27a")
 
-[connection signal="mouse_entered" from="Area" to="." method="_on_area_mouse_entered"]
 [connection signal="mouse_exited" from="Area" to="." method="_on_area_mouse_exited"]

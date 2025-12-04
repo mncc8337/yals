@@ -1,7 +1,24 @@
-[gd_scene load_steps=2 format=3 uid="uid://dhe0n7gk77age"]
+[gd_scene load_steps=4 format=3 uid="uid://3nkmqaw4w5q6"]
 
 [ext_resource type="Script" uid="uid://5hpa70dsm7fu" path="res://scene/wire.gd" id="1_o4pgg"]
+[ext_resource type="PackedScene" uid="uid://df66ol0cevrpd" path="res://scene/element.tscn" id="1_xboxq"]
 
-[node name="Wire" type="Line2D"]
-joint_mode = 2
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_smh75"]
+resource_local_to_scene = true
+
+[node name="Wire" node_paths=PackedStringArray("joints") instance=ExtResource("1_xboxq")]
 script = ExtResource("1_o4pgg")
+joints = []
+
+[node name="CollisionShape" parent="Area" index="0"]
+shape = SubResource("RectangleShape2D_smh75")
+
+[node name="Shape" parent="Area" index="1"]
+visible = false
+
+[node name="Label" parent="." index="1"]
+visible = false
+
+[node name="Line" type="Line2D" parent="." index="2"]
+unique_name_in_owner = true
+joint_mode = 2

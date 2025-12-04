@@ -1,6 +1,7 @@
 extends Node
 
 
+var hovering_element: Node
 var is_dragging: bool = false
 var mouse_relative_distance: Vector2
 
@@ -11,9 +12,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			if not event.pressed:
 				if is_dragging:
 					is_dragging = false
-					
 			else:
-				var ele: Element = _get_element_under_mouse()
+				var ele: Element = hovering_element
+				print(ele)
 				Global.selecting_element = ele
 				if ele:
 					ele.move_to_front()
@@ -21,14 +22,18 @@ func _unhandled_input(event: InputEvent) -> void:
 					if (
 						Global.current_mode == Global.Mode.Normal
 						and Global.current_ic
-						and Global.current_ic.io_pin_type_map.has(ele)
+						and ele is Joint
+						and ele in Global.current_ic.all_pins
 						and Global.current_ic.io_pin_type_map[ele as Joint] == IC.PinType.Input
 					):
 						ele.value = not ele.value
 				else:
 					print("deselected")
 	elif event is InputEventMouseMotion:
+		if not is_dragging:
+			hovering_element = _get_element_under_mouse()
 		var draggable: bool = Global.selecting_element and Global.selecting_element.draggable
+		draggable = draggable and (Global.current_mode != Global.Mode.Drawing)
 		if event.button_mask & MOUSE_BUTTON_MASK_LEFT and draggable:
 			if not is_dragging:
 				is_dragging = true
@@ -37,7 +42,8 @@ func _unhandled_input(event: InputEvent) -> void:
 				
 				if (
 					Global.current_ic
-					and Global.current_ic.io_pin_type_map.has(Global.selecting_element)
+					and Global.selecting_element is Joint
+					and Global.selecting_element in Global.current_ic.all_pins
 					and Global.current_ic.io_pin_type_map[Global.selecting_element as Joint] == IC.PinType.Input
 				):
 					Global.selecting_element.value = not Global.selecting_element.value
@@ -47,7 +53,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				if Global.selecting_element is Joint:
 					Global.selecting_element.moved.emit(Global.selecting_element, new_pos)
 				elif Global.selecting_element is IC:
-					for j in Global.selecting_element.io_pin_type_map.keys():
+					for j in Global.selecting_element.all_pins:
 						j.moved.emit(j, j.global_position)
 
 
@@ -58,8 +64,11 @@ func _get_element_under_mouse() -> Element:
 	query.collide_with_areas = true
 	query.collide_with_bodies = false
 	
-	var results = space_state.intersect_point(query)
+	# priority:
+	# joint > ic > wire
+	
 	var elements: Array[Element] = []
+	var results = space_state.intersect_point(query)
 	for result in results:
 		var ele = result.collider.get_parent()
 		if ele is not Element:
@@ -71,10 +80,20 @@ func _get_element_under_mouse() -> Element:
 	
 	elements.sort_custom(_sort_element)
 	
+	elements[0].mouse_entered.emit()
 	return elements[0]
 
 
 func _sort_element(a: Element, b: Element) -> bool:
+	if a is Joint and b is not Joint:
+		return true
+	if b is Joint and a is not Joint:
+		return false
+	if a is Wire and b is not Wire:
+		return false
+	if b is Wire and a is not Wire:
+		return true
+	
 	if a.z_index != b.z_index:
 		return a.z_index > b.z_index
 	

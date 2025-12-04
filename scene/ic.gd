@@ -10,6 +10,10 @@ extends Element
 			ic_name = val
 			%Label.text = val
 
+
+const UNSELECT_COLOR: Color = Color(0.205, 0.205, 0.205, 1.0)
+const SELECT_COLOR: Color = Color(0.427, 0.427, 0.427, 1.0)
+
 enum PinType {
 	Input,
 	Output,
@@ -22,6 +26,7 @@ var io_pin: Dictionary[PinType, Array] = {
 	PinType.Output: [],
 }
 
+var all_pins: Array[Joint] = []
 var io_pin_type_map: Dictionary[Joint, PinType] = {}
 var io_pin_name_map: Dictionary[String, Joint] = {}
 
@@ -32,6 +37,17 @@ func _ready() -> void:
 	if design_mode:
 		visible = false
 		%Area/CollisionShape.disabled = true
+	else:
+		mouse_entered.connect(_on_mouse_entered)
+		mouse_exited.connect(_on_mouse_exited)
+
+
+func _on_mouse_entered() -> void:
+	%Area/Shape.color = SELECT_COLOR
+
+
+func _on_mouse_exited() -> void:
+	%Area/Shape.color = UNSELECT_COLOR
 
 
 func _resize_container(container: Node2D, available_size: float) -> void:
@@ -56,6 +72,7 @@ func add_pin(pin_name: String, pin_type: PinType) -> Joint:
 	pin.name = pin_name
 	pin.value = false
 	pin.associated_ic = self
+	all_pins.append(pin)
 	io_pin[pin_type].append(pin)
 	io_pin_type_map[pin] = pin_type
 	io_pin_name_map[pin_name] = pin

@@ -3,6 +3,7 @@ extends IC
 @export var input_count: int = 2
 
 func _ready() -> void:
+	super()
 	add_pin("O", PinType.Output)
 	for i in range(input_count):
 		add_pin("I" + str(i), PinType.Input)

@@ -1,20 +1,30 @@
 class_name Wire
-extends Line2D
+extends Element
 
 
 @export var joints: Array[Joint] = []
 
-const INACTIVE_COLOR: Color = Color("#545454")
-const ACTIVE_COLOR: Color = Color("#ff6969")
-const SELECT_COLOR: Color = Color("#e3e3e3")
+const SELECT_COLOR: Dictionary[bool, Color] = {
+	true: Color("#ff9999"),
+	false: Color("#e3e3e3"),
+}
+
+const UNSELECT_COLOR: Dictionary[bool, Color] = {
+	true: Color("#ff5a5a"),
+	false: Color("#8a8a8a"),
+}
+
+var value: bool = false
 
 
 func _ready() -> void:
-	default_color = INACTIVE_COLOR
+	%Line.default_color = UNSELECT_COLOR[value]
 	global_position = Vector2.ZERO
-	add_point(Vector2.ZERO)
-	add_point(Vector2.ZERO)
-	default_color = INACTIVE_COLOR
+	%Line.add_point(Vector2.ZERO)
+	%Line.add_point(Vector2.ZERO)
+	mouse_entered.connect(_on_mouse_entered)
+	%Area/CollisionShape.disabled = true
+	draggable = false
 
 
 func add_joint(joint: Joint):
@@ -26,21 +36,46 @@ func add_joint(joint: Joint):
 	joints.append(joint)
 	joint.toggled.connect(_on_joint_toggled)
 	joint.moved.connect(_on_joint_moved)
-	set_point_position(len(joints) - 1, joint.global_position)
+	%Line.set_point_position(len(joints) - 1, joint.global_position)
 	
 	if len(joints) == 2:
 		joints[0].make_connection(joints[1])
+		%Area/CollisionShape.disabled = false
+		_update_collision_shape()
 
 
-func _on_joint_toggled(value) -> void:
-	if value:
-		default_color = ACTIVE_COLOR
-	else:
-		default_color = INACTIVE_COLOR
+func set_end_position(new_pos: Vector2) -> void:
+	%Line.set_point_position(1, new_pos)
+
+
+func _on_joint_toggled() -> void:
+	value = joints[0].value and joints[1].value
+	%Line.default_color = UNSELECT_COLOR[value]
 
 
 func _on_joint_moved(joint: Joint, new_pos: Vector2):
 	if joint == joints[0]:
-		set_point_position(0, new_pos)
+		%Line.set_point_position(0, new_pos)
 	else:
-		set_point_position(1, new_pos)
+		%Line.set_point_position(1, new_pos)
+	_update_collision_shape()
+
+func _update_collision_shape():
+	var p1 = %Line.get_point_position(0)
+	var p2 = %Line.get_point_position(1)
+
+	var center = (p1 + p2) / 2
+	var angle = (p2 - p1).angle()
+	var length = p1.distance_to(p2)
+
+	%Area/CollisionShape.position = center
+	%Area/CollisionShape.rotation = angle
+	%Area/CollisionShape.shape.size = Vector2(length, %Line.width)
+
+
+func _on_mouse_entered() -> void:
+	%Line.default_color = SELECT_COLOR[value]
+
+
+func _on_area_mouse_exited() -> void:
+	%Line.default_color = UNSELECT_COLOR[value]

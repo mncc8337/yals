@@ -8,11 +8,27 @@
 [node name="Main" type="Node"]
 script = ExtResource("1_ig7tw")
 
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="UI/Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "hi"
+
 [node name="Camera" type="Camera2D" parent="."]
 unique_name_in_owner = true
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 0.25
 autostart = true
 
 [node name="DrawingController" type="Node" parent="."]
@@ -23,9 +39,6 @@ script = ExtResource("3_1bvp3")
 
 [node name="ElementInspector" type="Node" parent="."]
 script = ExtResource("4_lquwl")
-
-[node name="Wires" type="Node" parent="."]
-unique_name_in_owner = true
 
 [node name="Elements" type="Node" parent="."]
 unique_name_in_owner = true

@@ -1,6 +1,7 @@
 extends IC
 
 func _ready() -> void:
+	super()
 	add_pin("O", PinType.Output)
 	add_pin("I", PinType.Input)
 

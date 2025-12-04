@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://df66ol0cevrpd" path="res://scene/element.tscn" id="1_gcrf7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mpbps"]
+resource_local_to_scene = true
 radius = 21.0
 
 [node name="Joint" instance=ExtResource("1_gcrf7")]

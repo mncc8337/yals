@@ -11,7 +11,7 @@ var is_drawing: bool = false
 func _unhandled_input(event: InputEvent) -> void:
 	if Global.current_mode != Global.Mode.Drawing:
 		if current_drawing:
-			%Wires.remove_child(current_drawing)
+			%Elements.remove_child(current_drawing)
 			current_drawing = null
 		return
 		
@@ -40,7 +40,7 @@ func _unhandled_input(event: InputEvent) -> void:
 						_generate_wire(Global.selecting_element)
 	elif event is InputEventMouseMotion:
 		if current_drawing:
-			current_drawing.set_point_position(1, %Camera.get_global_mouse_position())
+			current_drawing.set_end_position(%Camera.get_global_mouse_position())
 
 
 func _process(_delta: float) -> void:
@@ -55,5 +55,5 @@ func _process(_delta: float) -> void:
 
 func _generate_wire(joint: Joint) -> void:
 	current_drawing = wire_scene.instantiate()
-	%Wires.add_child(current_drawing)
+	%Elements.add_child(current_drawing)
 	current_drawing.add_joint(joint)
