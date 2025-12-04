@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://c3suu2noue81e"]
+[gd_scene load_steps=5 format=3 uid="uid://c3suu2noue81e"]
 
 [ext_resource type="Script" uid="uid://b3wnqbi0q1jff" path="res://main.gd" id="1_ig7tw"]
-[ext_resource type="PackedScene" uid="uid://ct8flsdn3pe5u" path="res://scene/ic.tscn" id="2_0xm2m"]
 [ext_resource type="Script" uid="uid://brbeaav2egqqv" path="res://script/drawing_controller.gd" id="2_h2yge"]
 [ext_resource type="Script" uid="uid://bo00d2bece1wh" path="res://script/camera_controller.gd" id="3_1bvp3"]
 [ext_resource type="Script" uid="uid://cgjds086c0vy7" path="res://script/element_inspector.gd" id="4_lquwl"]
@@ -11,6 +10,10 @@ script = ExtResource("1_ig7tw")
 
 [node name="Camera" type="Camera2D" parent="."]
 unique_name_in_owner = true
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.25
+autostart = true
 
 [node name="DrawingController" type="Node" parent="."]
 script = ExtResource("2_h2yge")
@@ -27,17 +30,4 @@ unique_name_in_owner = true
 [node name="Elements" type="Node" parent="."]
 unique_name_in_owner = true
 
-[node name="IC1" parent="Elements" instance=ExtResource("2_0xm2m")]
-unique_name_in_owner = true
-position = Vector2(-139, -33)
-ic_name = "IC1"
-
-[node name="IC2" parent="Elements" instance=ExtResource("2_0xm2m")]
-unique_name_in_owner = true
-position = Vector2(375, 166)
-ic_name = "IC2"
-
-[node name="IC3" parent="Elements" instance=ExtResource("2_0xm2m")]
-unique_name_in_owner = true
-position = Vector2(-189, 169)
-ic_name = "IC3"
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

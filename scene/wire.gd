@@ -20,10 +20,16 @@ func _ready() -> void:
 func add_joint(joint: Joint):
 	if len(joints) >= 2:
 		return
+	if len(joints) == 1:
+		if joint == joints[0]:
+			return
 	joints.append(joint)
 	joint.toggled.connect(_on_joint_toggled)
 	joint.moved.connect(_on_joint_moved)
 	set_point_position(len(joints) - 1, joint.global_position)
+	
+	if len(joints) == 2:
+		joints[0].make_connection(joints[1])
 
 
 func _on_joint_toggled(value) -> void:

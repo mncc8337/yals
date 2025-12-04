@@ -6,9 +6,15 @@ extends Element
 signal toggled(state: bool)
 signal moved(new_position: Vector2)
 
-const INACTIVE_COLOR: Color = Color("#8a8a8a")
-const ACTIVE_COLOR: Color = Color("#ff9999")
-const SELECT_COLOR: Color = Color("#e3e3e3")
+const SELECT_COLOR: Dictionary[bool, Color] = {
+	true: Color("#ff9999"),
+	false: Color("#e3e3e3"),
+}
+
+const UNSELECT_COLOR: Dictionary[bool, Color] = {
+	true: Color("#ff5a5a"),
+	false: Color("#8a8a8a"),
+}
 
 enum LabelPlacement {
 	Up,
@@ -24,10 +30,7 @@ var value: bool:
 	set(val):
 		if value != val:
 			value = val
-			if value:
-				%Area/Shape.color = ACTIVE_COLOR
-			else:
-				%Area/Shape.color = INACTIVE_COLOR
+			%Area/Shape.color = UNSELECT_COLOR[value]
 			toggled.emit(val)
 
 var show_label: bool = true:
@@ -35,14 +38,16 @@ var show_label: bool = true:
 		if show_label != val:
 			show_label = val
 			%Label.visible = show_label
+			if show_label:
+				%Area.scale = Vector2(1.0, 1.0)
+			else:
+				%Area.scale = Vector2(0.5, 0.5)
 var label_placement: LabelPlacement = LabelPlacement.Right
 var label_offset: float = 21.0
 
-var prev_position: Vector2 = Vector2.ZERO
-
 
 func _ready() -> void:
-	%Area/Shape.color = INACTIVE_COLOR
+	%Area/Shape.color = UNSELECT_COLOR[value]
 	%Label.visible = show_label
 	%Label.text = self.name
 	update_placement()
@@ -51,18 +56,12 @@ func _ready() -> void:
 	mouse_exited.connect(_on_mouse_exited)
 
 
-func _process(_delta: float) -> void:
-	if prev_position != global_position:
-		prev_position = global_position
-		moved.emit(self, global_position)
-
-
 func _on_mouse_entered() -> void:
-	%Area/Shape.color = SELECT_COLOR
+	%Area/Shape.color = SELECT_COLOR[value]
 
 
 func _on_mouse_exited() -> void:
-	%Area/Shape.color = INACTIVE_COLOR
+	%Area/Shape.color = UNSELECT_COLOR[value]
 
 
 func update_placement() -> void:
@@ -98,7 +97,7 @@ func make_connection(joint: Joint) -> void:
 func remove_connection(joint: Joint) -> void:
 	assert(joint in adjacent, "joint isnt connected")
 	adjacent.erase(joint)
-	joint.erase(self)
+	joint.adjacent.erase(self)
 
 
 func split(middle_joint: Joint, end_joint_id: int) -> void:

@@ -14,6 +14,7 @@ shape = SubResource("CircleShape2D_mpbps")
 
 [node name="Shape" parent="Area" index="1"]
 scale = Vector2(0.325, 0.325)
+color = Color(0.5411765, 0.5411765, 0.5411765, 1)
 polygon = PackedVector2Array(-56, -32, -32, -56, 32.00003, -56, 56, -32, 56, 32, 32.00003, 56, -32, 56, -56, 32)
 uv = PackedVector2Array(32, 8, 56, -16.000002, 120.00003, -16.000002, 144, 8, 144, 72, 120.00003, 96, 56, 96, 32, 72)
 

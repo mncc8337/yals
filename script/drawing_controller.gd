@@ -1,8 +1,8 @@
 extends Node
 
 
-@onready var joint_scene: Resource = load("res://scene/joint.tscn")
-@onready var wire_scene: Resource = load("res://scene/Wire.tscn")
+@onready var joint_scene: Resource = preload("res://scene/joint.tscn")
+@onready var wire_scene: Resource = preload("res://scene/wire.tscn")
 
 var current_drawing: Wire = null
 var is_drawing: bool = false

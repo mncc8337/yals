@@ -19,3 +19,9 @@ var current_mode: Mode = Mode.Normal:
 		if current_mode != val:
 			current_mode = val
 			mode_changed.emit(current_mode)
+
+
+var camera_zoom: float = 1.0
+
+var current_ic: IC = null
+var signal_propagating_queue: Array[Joint] = []
