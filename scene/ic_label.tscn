@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://c66w76287dhs4"]
+
+[sub_resource type="Theme" id="Theme_lvryk"]
+default_font_size = 36
+
+[node name="IcLabel" type="Button"]
+offset_right = 159.0
+offset_bottom = 96.0
+theme = SubResource("Theme_lvryk")
+text = "chim"

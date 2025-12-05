@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://3nkmqaw4w5q6"]
 
-[ext_resource type="Script" uid="uid://5hpa70dsm7fu" path="res://scene/wire.gd" id="1_o4pgg"]
-[ext_resource type="PackedScene" uid="uid://df66ol0cevrpd" path="res://scene/element.tscn" id="1_xboxq"]
+[ext_resource type="Script" uid="uid://5hpa70dsm7fu" path="res://scene/elements/wire.gd" id="1_o4pgg"]
+[ext_resource type="PackedScene" uid="uid://df66ol0cevrpd" path="res://scene/elements/element.tscn" id="1_xboxq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_smh75"]
 resource_local_to_scene = true

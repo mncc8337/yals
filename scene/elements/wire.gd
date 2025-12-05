@@ -9,7 +9,7 @@ const SELECT_COLOR: Dictionary[bool, Color] = {
 	false: Color("#e3e3e3"),
 }
 
-const UNSELECT_COLOR: Dictionary[bool, Color] = {
+const deselect_COLOR: Dictionary[bool, Color] = {
 	true: Color("#ff5a5a"),
 	false: Color("#8a8a8a"),
 }
@@ -18,11 +18,12 @@ var value: bool = false
 
 
 func _ready() -> void:
-	%Line.default_color = UNSELECT_COLOR[value]
+	%Line.default_color = deselect_COLOR[value]
 	global_position = Vector2.ZERO
 	%Line.add_point(Vector2.ZERO)
 	%Line.add_point(Vector2.ZERO)
-	mouse_entered.connect(_on_mouse_entered)
+	selected.connect(_on_selected)
+	deselected.connect(_on_deselected)
 	%Area/CollisionShape.disabled = true
 	draggable = false
 
@@ -49,8 +50,10 @@ func set_end_position(new_pos: Vector2) -> void:
 
 
 func _on_joint_toggled() -> void:
-	value = joints[0].value and joints[1].value
-	%Line.default_color = UNSELECT_COLOR[value]
+	value = true
+	for j in joints:
+		value = value and j.value
+	%Line.default_color = deselect_COLOR[value]
 
 
 func _on_joint_moved(joint: Joint, new_pos: Vector2):
@@ -73,9 +76,9 @@ func _update_collision_shape():
 	%Area/CollisionShape.shape.size = Vector2(length, %Line.width)
 
 
-func _on_mouse_entered() -> void:
+func _on_selected() -> void:
 	%Line.default_color = SELECT_COLOR[value]
 
 
-func _on_area_mouse_exited() -> void:
-	%Line.default_color = UNSELECT_COLOR[value]
+func _on_deselected() -> void:
+	%Line.default_color = deselect_COLOR[value]

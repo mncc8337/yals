@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bbl8duxtk1of"]
 
-[ext_resource type="PackedScene" uid="uid://ct8flsdn3pe5u" path="res://scene/ic.tscn" id="1_vrl37"]
+[ext_resource type="PackedScene" uid="uid://ct8flsdn3pe5u" path="res://scene/elements/ic.tscn" id="1_vrl37"]
 [ext_resource type="Script" uid="uid://buow57pt7mgf8" path="res://scene/default_gate/not.gd" id="1_wvhe8"]
 
 [node name="Not" instance=ExtResource("1_vrl37")]

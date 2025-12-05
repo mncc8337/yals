@@ -1,7 +1,7 @@
 extends Node
 
 
-@onready var ic_scene: Resource = preload("res://scene/ic.tscn")
+@onready var ic_scene: Resource = preload("res://scene/elements/ic.tscn")
 @onready var and_scene: Resource = preload("res://scene/default_gate/and.tscn")
 @onready var or_scene: Resource = preload("res://scene/default_gate/or.tscn")
 @onready var xor_scene: Resource = preload("res://scene/default_gate/xor.tscn")
@@ -18,7 +18,8 @@ func _ready() -> void:
 	
 	add_pin("I", IC.PinType.Input)
 	add_ic(not_scene)
-	add_ic(not_scene)
+	add_ic(and_scene)
+	add_ic(or_scene)
 
 
 func add_pin(pin_name: String, pin_type: IC.PinType):

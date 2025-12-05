@@ -1,8 +1,8 @@
 extends Node
 
 
-@onready var joint_scene: Resource = preload("res://scene/joint.tscn")
-@onready var wire_scene: Resource = preload("res://scene/wire.tscn")
+@onready var joint_scene: Resource = preload("res://scene/elements/joint.tscn")
+@onready var wire_scene: Resource = preload("res://scene/elements/wire.tscn")
 
 var current_drawing: Wire = null
 var is_drawing: bool = false
@@ -16,12 +16,21 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 		
 	if event is InputEventMouseButton:
+		var selecting_joint: Joint = null
+		if len(Global.selected_elements) == 1 and Global.selected_elements[0] is Joint:
+			selecting_joint = Global.selected_elements[0]
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
 				if current_drawing:
-					if Global.selecting_element is Joint:
-						current_drawing.add_joint(Global.selecting_element)
-						current_drawing = null
+					if selecting_joint:
+						if (
+							selecting_joint != current_drawing.joints[0]
+							and selecting_joint not in current_drawing.joints[0].adjacent
+						):
+							current_drawing.add_joint(selecting_joint)
+							if current_drawing.joints[0].value != current_drawing.joints[1].value:
+								Global.signal_propagating_queue.push_back(current_drawing.joints[1])
+							current_drawing = null
 					else:
 						var new_joint: Joint = joint_scene.instantiate()
 						%Elements.add_child(new_joint)
@@ -36,8 +45,8 @@ func _unhandled_input(event: InputEvent) -> void:
 						_generate_wire(new_joint)
 						print("added new wire")
 				else:
-					if Global.selecting_element is Joint:
-						_generate_wire(Global.selecting_element)
+					if selecting_joint:
+						_generate_wire(selecting_joint)
 	elif event is InputEventMouseMotion:
 		if current_drawing:
 			current_drawing.set_end_position(%Camera.get_global_mouse_position())

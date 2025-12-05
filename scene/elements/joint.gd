@@ -4,14 +4,14 @@ extends Element
 
 
 signal toggled(state: bool)
-signal moved(new_position: Vector2)
+signal moved(joint: Joint, new_position: Vector2)
 
 const SELECT_COLOR: Dictionary[bool, Color] = {
 	true: Color("#ff9999"),
 	false: Color("#e3e3e3"),
 }
 
-const UNSELECT_COLOR: Dictionary[bool, Color] = {
+const deselect_COLOR: Dictionary[bool, Color] = {
 	true: Color("#ff5a5a"),
 	false: Color("#8a8a8a"),
 }
@@ -30,8 +30,8 @@ var value: bool:
 	set(val):
 		if value != val:
 			value = val
-			%Area/Shape.color = UNSELECT_COLOR[value]
-			toggled.emit(val)
+			%Area/Shape.color = deselect_COLOR[value]
+			toggled.emit()
 
 var show_label: bool = true:
 	set(val):
@@ -47,21 +47,21 @@ var label_offset: float = 21.0
 
 
 func _ready() -> void:
-	%Area/Shape.color = UNSELECT_COLOR[value]
+	%Area/Shape.color = deselect_COLOR[value]
 	%Label.visible = show_label
 	%Label.text = self.name
 	update_placement()
 	
-	mouse_entered.connect(_on_mouse_entered)
-	mouse_exited.connect(_on_mouse_exited)
+	selected.connect(_on_selected)
+	deselected.connect(_on_deselected)
 
 
-func _on_mouse_entered() -> void:
+func _on_selected() -> void:
 	%Area/Shape.color = SELECT_COLOR[value]
 
 
-func _on_mouse_exited() -> void:
-	%Area/Shape.color = UNSELECT_COLOR[value]
+func _on_deselected() -> void:
+	%Area/Shape.color = deselect_COLOR[value]
 
 
 func update_placement() -> void:

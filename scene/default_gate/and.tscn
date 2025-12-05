@@ -1,11 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://l4s3c2qwnuak"]
+[gd_scene load_steps=4 format=3 uid="uid://l4s3c2qwnuak"]
 
-[ext_resource type="PackedScene" uid="uid://ct8flsdn3pe5u" path="res://scene/ic.tscn" id="1_35ype"]
+[ext_resource type="PackedScene" uid="uid://ct8flsdn3pe5u" path="res://scene/elements/ic.tscn" id="1_35ype"]
 [ext_resource type="Script" uid="uid://cheo22ociio74" path="res://scene/default_gate/and.gd" id="1_b6w0d"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eler6"]
+resource_local_to_scene = true
+size = Vector2(200, 120)
 
 [node name="And" instance=ExtResource("1_35ype")]
 script = ExtResource("1_b6w0d")
 input_count = 2
+
+[node name="CollisionShape" parent="Area" index="0"]
+shape = SubResource("RectangleShape2D_eler6")
 
 [node name="Label" parent="." index="1"]
 text = "AND"

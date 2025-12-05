@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bamff14gwu3p"]
 
-[ext_resource type="PackedScene" uid="uid://ct8flsdn3pe5u" path="res://scene/ic.tscn" id="1_1jkn0"]
+[ext_resource type="PackedScene" uid="uid://ct8flsdn3pe5u" path="res://scene/elements/ic.tscn" id="1_1jkn0"]
 [ext_resource type="Script" uid="uid://6n5tylsc5q7l" path="res://scene/default_gate/or.gd" id="1_4swvc"]
 
 [node name="Or" instance=ExtResource("1_1jkn0")]

@@ -2,7 +2,7 @@ class_name IC
 extends Element
 
 
-@onready var joint_scene: Resource = load("res://scene/joint.tscn")
+@onready var joint_scene: Resource = load("res://scene/elements/joint.tscn")
 
 @export var ic_name: String = "IC":
 	set(val):
@@ -11,7 +11,7 @@ extends Element
 			%Label.text = val
 
 
-const UNSELECT_COLOR: Color = Color(0.205, 0.205, 0.205, 1.0)
+const deselect_COLOR: Color = Color(0.205, 0.205, 0.205, 1.0)
 const SELECT_COLOR: Color = Color(0.427, 0.427, 0.427, 1.0)
 
 enum PinType {
@@ -38,16 +38,16 @@ func _ready() -> void:
 		visible = false
 		%Area/CollisionShape.disabled = true
 	else:
-		mouse_entered.connect(_on_mouse_entered)
-		mouse_exited.connect(_on_mouse_exited)
+		selected.connect(_on_selected)
+		deselected.connect(_on_deselected)
 
 
-func _on_mouse_entered() -> void:
+func _on_selected() -> void:
 	%Area/Shape.color = SELECT_COLOR
 
 
-func _on_mouse_exited() -> void:
-	%Area/Shape.color = UNSELECT_COLOR
+func _on_deselected() -> void:
+	%Area/Shape.color = deselect_COLOR
 
 
 func _resize_container(container: Node2D, available_size: float) -> void:
@@ -159,9 +159,8 @@ func _dfs(j: Joint, visited: Dictionary[Joint, bool]) -> Array[Joint]:
 				
 		if is_endpoint:
 			end_joints.append(adj_joint)
-		elif visited.has(adj_joint):
-			continue
-		end_joints += _dfs(adj_joint, visited)
+		if not visited.has(adj_joint):
+			end_joints += _dfs(adj_joint, visited)
 	return end_joints
 
 

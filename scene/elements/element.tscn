@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://df66ol0cevrpd"]
 
-[ext_resource type="Script" uid="uid://cq66bkgu4dmvg" path="res://scene/element.gd" id="1_8e27a"]
+[ext_resource type="Script" uid="uid://cq66bkgu4dmvg" path="res://scene/elements/element.gd" id="1_8e27a"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8e27a"]
 
@@ -27,5 +27,3 @@ offset_right = 40.0
 offset_bottom = 23.0
 text = "Element"
 label_settings = SubResource("LabelSettings_8e27a")
-
-[connection signal="mouse_exited" from="Area" to="." method="_on_area_mouse_exited"]

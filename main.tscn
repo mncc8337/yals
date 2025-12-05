@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://c3suu2noue81e"]
+[gd_scene load_steps=6 format=3 uid="uid://c3suu2noue81e"]
 
 [ext_resource type="Script" uid="uid://b3wnqbi0q1jff" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://brbeaav2egqqv" path="res://script/drawing_controller.gd" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://c66w76287dhs4" path="res://scene/ic_label.tscn" id="2_lquwl"]
 [ext_resource type="Script" uid="uid://bo00d2bece1wh" path="res://script/camera_controller.gd" id="3_1bvp3"]
 [ext_resource type="Script" uid="uid://cgjds086c0vy7" path="res://script/element_inspector.gd" id="4_lquwl"]
 
@@ -12,23 +13,78 @@ script = ExtResource("1_ig7tw")
 
 [node name="Control" type="Control" parent="UI"]
 layout_mode = 3
+anchor_top = 0.89
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_force_pass_scroll_events = false
+
+[node name="Panel" type="Panel" parent="UI/Control"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 
-[node name="Label" type="Label" parent="UI/Control"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-text = "hi"
+[node name="MarginContainer" type="MarginContainer" parent="UI/Control/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/Control/Panel/MarginContainer"]
+clip_contents = false
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Control/Panel/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="IcLabel" parent="UI/Control/Panel/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("2_lquwl")]
+layout_mode = 2
+
+[node name="IcLabel2" parent="UI/Control/Panel/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("2_lquwl")]
+layout_mode = 2
+
+[node name="IcLabel3" parent="UI/Control/Panel/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("2_lquwl")]
+layout_mode = 2
+
+[node name="IcLabel4" parent="UI/Control/Panel/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("2_lquwl")]
+layout_mode = 2
+
+[node name="IcLabel5" parent="UI/Control/Panel/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("2_lquwl")]
+layout_mode = 2
+
+[node name="IcLabel9" parent="UI/Control/Panel/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("2_lquwl")]
+layout_mode = 2
+
+[node name="IcLabel10" parent="UI/Control/Panel/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("2_lquwl")]
+layout_mode = 2
+
+[node name="IcLabel11" parent="UI/Control/Panel/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("2_lquwl")]
+layout_mode = 2
+
+[node name="IcLabel6" parent="UI/Control/Panel/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("2_lquwl")]
+layout_mode = 2
+
+[node name="IcLabel7" parent="UI/Control/Panel/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("2_lquwl")]
+layout_mode = 2
+
+[node name="IcLabel8" parent="UI/Control/Panel/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("2_lquwl")]
+layout_mode = 2
 
 [node name="Camera" type="Camera2D" parent="."]
 unique_name_in_owner = true
 
 [node name="Timer" type="Timer" parent="."]
+wait_time = 0.25
 autostart = true
 
 [node name="DrawingController" type="Node" parent="."]

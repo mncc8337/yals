@@ -7,7 +7,7 @@ var last_mouse_position: Vector2
 var zoom_speed: float = 1.1
 
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	# camera drag
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_MIDDLE:

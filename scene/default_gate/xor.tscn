@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dppf4k28njdu6"]
 
 [ext_resource type="Script" uid="uid://ce2sbmdd5b4j" path="res://scene/default_gate/xor.gd" id="1_5vpnc"]
-[ext_resource type="PackedScene" uid="uid://ct8flsdn3pe5u" path="res://scene/ic.tscn" id="1_d6hwg"]
+[ext_resource type="PackedScene" uid="uid://ct8flsdn3pe5u" path="res://scene/elements/ic.tscn" id="1_d6hwg"]
 
 [node name="Xor" instance=ExtResource("1_d6hwg")]
 script = ExtResource("1_5vpnc")
